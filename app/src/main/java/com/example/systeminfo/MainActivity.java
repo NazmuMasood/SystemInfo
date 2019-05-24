@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     ImageView ivBattery; TextView tvBattery;
@@ -29,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
             tvBattery.setText("BATTERY: "+level+"%");
+            Toast.makeText(context, "Battery: "+level+"%", Toast.LENGTH_LONG).show();
 
             if (level>75){
                 ivBattery.setImageResource(R.drawable.battery_100);
