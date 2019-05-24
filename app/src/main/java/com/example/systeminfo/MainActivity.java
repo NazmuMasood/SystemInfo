@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
             tvBattery.setText("BATTERY: "+level+"%");
-            Toast.makeText(context, "Battery: "+level+"%", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, "Battery: "+level+"%", Toast.LENGTH_SHORT).show();
 
             if (level>75){
                 ivBattery.setImageResource(R.drawable.battery_100);
