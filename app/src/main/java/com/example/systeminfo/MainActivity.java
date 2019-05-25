@@ -22,30 +22,53 @@ public class MainActivity extends AppCompatActivity {
         ivBattery = findViewById(R.id.ivBattery);
         tvBattery = findViewById(R.id.tvBattery);
         this.registerReceiver(this.batteryInfoReceiver, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
+        /*this.registerReceiver(this.batteryInfoReceiver, new IntentFilter(Intent.ACTION_POWER_CONNECTED));
+        this.registerReceiver(this.batteryInfoReceiver, new IntentFilter(Intent.ACTION_POWER_DISCONNECTED));*/
+
     }
 
     private BroadcastReceiver batteryInfoReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             int level = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, 0);
-            tvBattery.setText("BATTERY: "+level+"%");
-            Toast.makeText(context, "Battery: "+level+"%", Toast.LENGTH_SHORT).show();
+            tvBattery.setText("BATTERY: " + level + "%");
 
-            if (level>75){
-                ivBattery.setImageResource(R.drawable.battery_100);
+            if (intent.getAction().equals(Intent.ACTION_BATTERY_CHANGED)) {
+                Toast.makeText(context, "Battery: " + level + "%", Toast.LENGTH_SHORT).show();
             }
-            if (level>50 && level<=75){
-                ivBattery.setImageResource(R.drawable.battery_75);
+            /*if (intent.getAction().equals(Intent.ACTION_POWER_CONNECTED)) {
+                Toast.makeText(context, "Charging", Toast.LENGTH_SHORT).show();
             }
-            if (level>25 && level<=50){
-                ivBattery.setImageResource(R.drawable.battery_50);
+            if (intent.getAction().equals(Intent.ACTION_POWER_DISCONNECTED)){
+                Toast.makeText(context, "Not charging", Toast.LENGTH_SHORT).show();
+            }*/
+
+            int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
+            boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
+                    status == BatteryManager.BATTERY_STATUS_FULL;
+
+            if (isCharging) {
+                ivBattery.setImageResource(R.drawable.battery_charging);
             }
-            if (level>5 && level<=25){
-                ivBattery.setImageResource(R.drawable.battery_25);
-            }
-            if (level<=5){
-                ivBattery.setImageResource(R.drawable.battery_0);
+            if (isCharging == false) {
+                if (level > 75) {
+                    ivBattery.setImageResource(R.drawable.battery_100);
+                }
+                if (level > 50 && level <= 75) {
+                    ivBattery.setImageResource(R.drawable.battery_75);
+                }
+                if (level > 25 && level <= 50) {
+                    ivBattery.setImageResource(R.drawable.battery_50);
+                }
+                if (level > 5 && level <= 25) {
+                    ivBattery.setImageResource(R.drawable.battery_25);
+                }
+                if (level <= 5) {
+                    ivBattery.setImageResource(R.drawable.battery_0);
+                }
             }
         }
     };
 }
+
+
